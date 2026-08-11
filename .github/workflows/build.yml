@@ -18,15 +18,44 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          git \
+          ffmpeg \
+          libffi-dev \
+          libssl-dev \
+          libsdl2-dev \
+          libsdl2-image-dev \
+          libsdl2-mixer-dev \
+          libsdl2-ttf-dev \
+          libportmidi-dev \
+          libswscale-dev \
+          libavformat-dev \
+          libavcodec-dev \
+          zlib1g-dev \
+          openjdk-17-jdk \
+          zip \
+          unzip \
+          autoconf \
+          libtool \
+          pkg-config \
+          ccache
+
+    - name: Install Buildozer & Cython
       run: |
         pip install --upgrade pip
-        pip install buildozer cython
+        pip install "cython<3.0.0" buildozer
 
-    - name: Init and Build APK
+    - name: Create buildozer.spec and Build
       run: |
-        buildozer init
-        buildozer -s android debug
+        yes | buildozer init
+        # Включаем Kivy в зависимости
+        sed -i 's/requirements = python3,kivy/requirements = python3,kivy/g' buildozer.spec
+        # Запускаем компиляцию с авто-принятием лицензий
+        yes | buildozer -s android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
