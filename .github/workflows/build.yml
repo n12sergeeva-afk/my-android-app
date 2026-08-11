@@ -27,6 +27,9 @@ jobs:
 
     - name: Build APK
       run: |
+        # Автоматически принимаем лицензии для запускных файлов Android SDK
+        yes | buildozer android debug || true
+        # Финальный запуск сборки
         buildozer -s android debug
 
     - name: Upload APK
