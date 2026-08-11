@@ -25,21 +25,9 @@ jobs:
         pip install --upgrade pip setuptools
         pip install "cython<3.0.0" buildozer
 
-    - name: Accept Android Licenses & Build APK
+    - name: Build APK
       run: |
-        # Предварительно создаем папку лицензий для Android SDK
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        echo -e "\n8933 low 89333d0c9d4538504667ddef47be3d231937d326\nd56f5187479451eabf01fb78af6b7d34feab315a\n24333f8a63718c309d6089f2781637540650ed1c\n84831b94fe1160745446b25e041309cc0c4be5d0\n6010071570f435b92b44d6f4720b3a8d9691f2d6\n33b6a2b64627999703c9a3574a5ee152e25702c2" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        
-        # Запускаем сборку через expect / stdbuf, чтобы имитировать ввод
-        buildozer -s android debug <<EOF
-        y
-        y
-        y
-        y
-        y
-        y
-        EOF
+        buildozer -s android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
