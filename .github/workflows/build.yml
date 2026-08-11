@@ -27,7 +27,7 @@ jobs:
 
     - name: Build APK
       run: |
-        printf 'y\ny\ny\ny\ny\ny\ny\n' | buildozer -s android debug
+        buildozer -s --accept-sdk-license android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
